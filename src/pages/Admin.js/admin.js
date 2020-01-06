@@ -16,6 +16,7 @@ class Admin extends Component {
     <Layout>
       <Sider width={200} >
         <Menu
+          theme='dark'
           mode="inline"
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
@@ -43,7 +44,6 @@ class Admin extends Component {
           </Menu.Item>
 
           <SubMenu
-            className={styles.admin_SubMenu}
             key="sub3"
             title={
               <span>
@@ -52,9 +52,9 @@ class Admin extends Component {
               </span>
             }
           >
-            <Menu.Item key="9" className={styles.admin_SubMenu}>库存管理</Menu.Item>
-            <Menu.Item key="10" className={styles.admin_SubMenu}>品类管理</Menu.Item>
-            <Menu.Item key="11" className={styles.admin_SubMenu}>折扣活动</Menu.Item>
+            <Menu.Item key="9">库存管理</Menu.Item>
+            <Menu.Item key="10">品类管理</Menu.Item>
+            <Menu.Item key="11">折扣活动</Menu.Item>
           </SubMenu>
         <Menu.Item
             key="sub4"
