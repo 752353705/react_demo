@@ -1,0 +1,20 @@
+let arr = [
+  {
+    name:'盘点管理',
+    icon:'mail',
+    path:'/InventoryBinding',
+    id:'4'
+  },
+  {
+    name:'商品管理',
+    icon:'mail',
+    id:'3',
+    children:[{
+      name:'折扣活动',
+      icon:'mail',
+      id:'3-0',
+      path:'/admin/Discounts'
+    },
+  ]
+  },
+]
