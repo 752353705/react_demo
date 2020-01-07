@@ -1,11 +1,11 @@
 import React,{Component, Fragment} from 'react'
-class Home extends Component{
+class Inventory extends Component{
   render(){
     return(
       <Fragment>
-        这里是首页
+        这里是盘点
       </Fragment>
     )
   }
 }
-export default Home
+export default Inventory

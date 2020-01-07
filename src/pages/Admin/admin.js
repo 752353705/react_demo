@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+import React,{ Fragment, Component } from 'react'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import styles from './admin.module.less' 
 import CustomNav from '../../components/CustomNav/CustomNav'
@@ -11,7 +11,7 @@ const { Header, Sider, Content } = Layout;
 class Admin extends Component {
   render(){
     return(
-      <Layout className={styles.admin_layout}>
+      <Layout className={styles.admin}>
         <Header className={styles.admin_Header} >
         <HeaderNav></HeaderNav>
         </Header>
