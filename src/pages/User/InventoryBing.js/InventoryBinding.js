@@ -1,7 +1,7 @@
 import React, { Component } from  'react'
 import { Table } from 'antd';
 import {data,columns} from './IBdata'
-import Time from './Time'
+import Time from '../Time'
 
 class InventoryBinding extends Component{
   render(){

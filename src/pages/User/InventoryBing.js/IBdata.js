@@ -1,7 +1,9 @@
+import React from 'react'
 export const columns = [
   {
     title: '商品编码',
     dataIndex: 'name',
+    render: text => <a>{text}</a>,
   },
   {
     title: '条形码',

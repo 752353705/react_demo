@@ -3,11 +3,11 @@ import {HashRouter,Link,Route,Redirect,Switch} from 'react-router-dom'
 import Login from '../pages/Login/login'
 import Admin from '../pages/Admin/admin'
 import Home from '../pages/Home/Home'
-import User from '../pages/User/User'
-import Inventory from '../pages/User/InventoryBinding'
-import Activity from '../pages/User/Discounts'
-import Stock from '../pages/Goods/Stock'
-import Type from '../pages/Goods/Type'
+import User from '../pages/User/User/User'
+import Inventory from '../pages/User/InventoryBing.js/InventoryBinding'
+import Activity from '../pages/User/Discounts/Discounts'
+import Stock from '../pages/User/Goods/Stock/Stock'
+import Type from '../pages/User/Goods/Type/Type'
 
 
 class Router extends Component{
