@@ -4,9 +4,12 @@ import styles from './Login.module.less'
 import {UserLogin} from '../../api/user'
 import {withRouter} from 'react-router-dom'
 import {getItem,setItem} from '../../utils/webStorage'
+
 class Login extends Component{
   componentDidMount(){
+    // console.log('挂载了')
     if(getItem('token')){
+      // console.log('进行了判断')
       this.props.history.replace('/admin/home')
     }
   }
@@ -37,7 +40,8 @@ class Login extends Component{
   render(){
     const { getFieldDecorator } = this.props.form;
     return(
-      <Card  className={styles.login}>
+      <div className={styles.login}>
+        <Card>
         <Form.Item>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: '用户名不能为空!' },
@@ -71,6 +75,7 @@ class Login extends Component{
           Or <a href="">register now!</a>
         </Form.Item>
       </Card>
+        </div>
     )
   }
 }

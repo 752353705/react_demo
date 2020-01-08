@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 class HeaderNav extends Component{
   render(){
     return(
-      <div>猫头鹰超市管理系统</div>
+      <Fragment>
+        <div>猫头鹰超市管理系统</div>
+      </Fragment>
     )
   }
 }
