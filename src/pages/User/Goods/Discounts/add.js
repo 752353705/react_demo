@@ -1,11 +1,33 @@
 import React from 'react'
-import { Drawer, Form, Button, Col, Row, Input, Select, DatePicker, Icon } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, DatePicker, Icon ,message} from 'antd';
+import {withRouter} from 'react-router-dom'
+import {addCountShop,getData} from '../../../../api/shop'
 
 const { Option } = Select;
 
 
 class DrawerForm extends React.Component {
   state = { visible: false};
+
+  addShop=()=>{
+    let {getFieldsValue} = this.props.form
+    let  newData = getFieldsValue()  
+    // newData 就是要添加的折扣商品
+    // console.log(newData)
+    addCountShop(newData)
+    .then((res)=>{
+      // console.log(res)
+      // getData()
+      // console.log('this.props',this.props)
+      let {nowPage} = this.props
+      console.log(nowPage)
+      this.props.getTableDate()
+    })
+    .catch((err)=>{
+      message.error('添加失败')
+    })
+
+  }
 
   showDrawer = () => {
     this.setState({
@@ -21,17 +43,14 @@ class DrawerForm extends React.Component {
   };
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     let {data} = this.props
     this.state = { visible: data};
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Button type="primary" onClick={this.showDrawer}>
-          <Icon type="plus" /> New account
-        </Button>
         <Drawer
-          title="Create a new account"
+          title="添加折扣商品"
           width={720}
           onClose={this.onClose}
           visible={this.state.visible}
@@ -40,22 +59,20 @@ class DrawerForm extends React.Component {
           <Form layout="vertical" hideRequiredMark>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Name">
-                  {getFieldDecorator('name', {
-                    rules: [{ required: true, message: 'Please enter user name' }],
-                  })(<Input placeholder="Please enter user name" />)}
+                <Form.Item label="商品编号">
+                  {getFieldDecorator('shopNum', {
+                    rules: [{ required: true, message: '请输入折扣商品编号' }],
+                  })(<Input placeholder="请输入折扣商品编号" />)}
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Url">
-                  {getFieldDecorator('url', {
-                    rules: [{ required: true, message: 'Please enter url' }],
+                <Form.Item label="商品名称">
+                  {getFieldDecorator('shopName', {
+                    rules: [{ required: true, message: '请输入商品名称' }],
                   })(
                     <Input
                       style={{ width: '100%' }}
-                      addonBefore="http://"
-                      addonAfter=".com"
-                      placeholder="Please enter url"
+                      placeholder="请输入商品名称"
                     />,
                   )}
                 </Form.Item>
@@ -63,67 +80,33 @@ class DrawerForm extends React.Component {
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Owner">
-                  {getFieldDecorator('owner', {
-                    rules: [{ required: true, message: 'Please select an owner' }],
+                <Form.Item label="商品价格">
+                  {getFieldDecorator('shopPrice', {
+                    rules: [{ required: true, message: '商品价格' }],
                   })(
-                    <Select placeholder="Please select an owner">
-                      <Option value="xiao">Xiaoxiao Fu</Option>
-                      <Option value="mao">Maomao Zhou</Option>
-                    </Select>,
+                    <Input placeholder="请输入商品价格"/>
+                      
                   )}
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Type">
-                  {getFieldDecorator('type', {
-                    rules: [{ required: true, message: 'Please choose the type' }],
+                <Form.Item label="打折力度">
+                  {getFieldDecorator('Count', {
+                    rules: [{ required: true, message: '请输入打折力度' }],
                   })(
-                    <Select placeholder="Please choose the type">
-                      <Option value="private">Private</Option>
-                      <Option value="public">Public</Option>
-                    </Select>,
+                    <Input placeholder="请输入打折力度"/>
                   )}
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Approver">
-                  {getFieldDecorator('approver', {
-                    rules: [{ required: true, message: 'Please choose the approver' }],
+                <Form.Item label="折后价格">
+                  {getFieldDecorator('CountPrice', {
+                    rules: [{ required: true, message: '请输入折后价格' }],
                   })(
-                    <Select placeholder="Please choose the approver">
-                      <Option value="jack">Jack Ma</Option>
-                      <Option value="tom">Tom Liu</Option>
-                    </Select>,
+                    <Input placeholder="请输入折后价格"/>
                   )}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="DateTime">
-                  {getFieldDecorator('dateTime', {
-                    rules: [{ required: true, message: 'Please choose the dateTime' }],
-                  })(
-                    <DatePicker.RangePicker
-                      style={{ width: '100%' }}
-                      getPopupContainer={trigger => trigger.parentNode}
-                    />,
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item label="Description">
-                  {getFieldDecorator('description', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'please enter url description',
-                      },
-                    ],
-                  })(<Input.TextArea rows={4} placeholder="please enter url description" />)}
                 </Form.Item>
               </Col>
             </Row>
@@ -143,7 +126,7 @@ class DrawerForm extends React.Component {
             <Button onClick={this.onClose} style={{ marginRight: 8 }}>
               Cancel
             </Button>
-            <Button onClick={this.onClose} type="primary">
+            <Button onClick={this.onClose,this.addShop} type="primary">
               Submit
             </Button>
           </div>
@@ -153,7 +136,6 @@ class DrawerForm extends React.Component {
   }
 }
 
-const NewDrawerForm = Form.create()(DrawerForm);
+ 
 
-// ReactDOM.render(<App />, mountNode);
-export default NewDrawerForm
+export default Form.create({})(withRouter(DrawerForm));
