@@ -50,7 +50,7 @@ class CustomNav extends Component{
       className={styles.menu}
       theme="dark"
       // onClick={this.handleClick}
-      defaultSelectedKeys={['0']}
+      
       defaultOpenKeys={['sub1']}
       mode="inline"
     >

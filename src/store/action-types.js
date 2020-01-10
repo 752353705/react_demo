@@ -1,0 +1,3 @@
+export const SET_TOKEN_MODAL = 'SET_TOKEN_MODAL'
+export const SET_DRAWERSHOW = 'SET_DRAWERSHOW'
+export const SET_UPSHOW = 'SET_UPSHOW'

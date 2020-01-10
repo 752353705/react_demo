@@ -43,4 +43,32 @@ export const data = [
     shopName:'清风抽纸',
     KNum:2590
   },
+  {
+    key: '4',
+    KCode: 'A3',
+    shopCode: 'A-0003',
+    shopName:'清风抽纸',
+    KNum:2590
+  },
+  {
+    key: '5',
+    KCode: 'A3',
+    shopCode: 'A-0003',
+    shopName:'清风抽纸',
+    KNum:2590
+  },
+  {
+    key: '6',
+    KCode: 'A3',
+    shopCode: 'A-0003',
+    shopName:'清风抽纸',
+    KNum:2590
+  },
+  {
+    key: '7',
+    KCode: 'A3',
+    shopCode: 'A-0003',
+    shopName:'清风抽纸',
+    KNum:2590
+  }
 ];
