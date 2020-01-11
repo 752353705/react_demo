@@ -4,6 +4,7 @@ const jwt = require('../../utils/jwt')
 const Mail = require('../../mail');
 const codes = {};
 const adminModel = require('../../db/model/adminModel')
+
 // 获取邮箱验证码
 router.post('/getMailCode',(req,res)=>{
   console.log(req)

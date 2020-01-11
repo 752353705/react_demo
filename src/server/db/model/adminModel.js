@@ -1,5 +1,5 @@
 
-//登录的Schema对象
+//登录接口
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 let adminSchema = new Schema({

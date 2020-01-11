@@ -10,10 +10,11 @@ router.post('/addShop',(req,res)=>{
   Shop.add(shopNum,shopName,shopPrice,Count,CountPrice)
   .then((data)=>{res.send({err:0,msg:'添加ok'})})
   .catch((err)=>{
-    console.log(err)
+    // console.log(err)
     res.send({err:-1,msg:'添加失败'})
   })
 })
+
 //删除接口
 router.post('/delShop',(req,res)=>{
   let {_id} = req.body
@@ -25,6 +26,8 @@ router.post('/delShop',(req,res)=>{
     res.send({err:-1,msg:'del nook'})
   })
 }) 
+
+
 // 修改数据接口
 router.get('/updateShop',(req,res)=>{
   let {_id,shopNum,shopName,shopPrice,Count,CountPrice} = req.query
@@ -32,10 +35,11 @@ router.get('/updateShop',(req,res)=>{
   .then((data)=>{res.send({err:0,msg:'更新数据ok'})})
   .catch((data)=>{res.send({err:-1,msg:'更新数据失败'})})
 })
+
 // 获取数据接口
   // 分页查询接口
 router.post('/getShops',(req,res)=>{
-  console.log(req.body)
+  // console.log(req.body)
   let page = Number(req.body.nowPage) || 1
   let pageSize = Number(req.body.pageSize) || 3
   Shop.get(page,pageSize)
@@ -119,4 +123,28 @@ router.post('/updatetype',(req,res)=>{
   .then((data)=>{res.send({err:0,msg:'更新数据ok'})})
   .catch((data)=>{res.send({err:-1,msg:'更新数据失败'})})
 })
+
+
+  // 按照添加日期查询 + 分页
+router.post('/getShopsByCtime',(req,res)=>{
+  // console.log(req.body)
+  let page = Number(req.body.page) || 1
+  let pageSize = Number(req.body.pageSize) || 3
+  let startTime = Number(req.body.startTime)
+  let endTime = Number(req.body.endTime)
+  // let startTime = req.body.startTime
+  // let endTime = req.body.endTime
+
+
+  Shop.getByCtime(startTime,endTime,page,pageSize)
+  .then((data)=>{
+    res.send({err:0,msg:'按照日期查询ok',list:data})
+  })
+  .catch((err)=>{
+    res.send({err:-1,msg:'按照日期查询失败'})
+  })
+
+})  
+
+
 module.exports = router

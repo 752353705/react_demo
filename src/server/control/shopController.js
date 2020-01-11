@@ -15,6 +15,14 @@ async function get(page,pageSize){
   let shops = await ShopModel.find().skip((page-1)*pageSize).limit(pageSize)
   return {shops,allCount}
 }
+  // 条件查询 按照添加时间进行盘点
+async function getByCtime(startTime,endTime,page,pageSize){
+  let allShops = await ShopModel.find({ctime:{$gt:startTime,$lt:endTime}})
+  let allCount = allShops.length
+  let shops = await ShopModel.find({ctime:{$gt:startTime,$lt:endTime}}).skip((page-1)*pageSize).limit(pageSize)
+  return {shops,allCount}
+}
+
 // 修改数据
 async function update(_id,shopNum,shopName,shopPrice,Count,CountPrice){
   let result = await ShopModel.updateOne({_id},{shopNum,shopName,shopPrice,Count,CountPrice})
@@ -75,4 +83,4 @@ async function updatetype(_id,Num,name){
   console.log(result)
   return result
 }
-module.exports = {add,del,update,get,getStockList,addstock,getTypeList,addtype,deltype,updatetype}
+module.exports = {add,del,update,get,getStockList,addstock,getTypeList,addtype,deltype,updatetype,getByCtime}

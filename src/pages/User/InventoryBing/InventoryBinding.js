@@ -3,14 +3,16 @@ import { Table,Button,Pagination } from 'antd';
 import {data,columns} from './IBdata'
 import Time from '../Time'
 import { Link } from 'react-router-dom';
-import {getData} from '../../../api/shop'
+import {getData,getShopsByTime} from '../../../api/shop'
 
+let t1 = ''
+let t2 = ''
 class InventoryBinding extends Component{
   constructor(){
     super()
     this.state={
       startTime:'',
-      endTiem:'',
+      endTime:'',
       nowPage:1,
       pageSize:3,
       data:[],
@@ -52,7 +54,17 @@ class InventoryBinding extends Component{
 
   // 获取日期时间  便于盘点
   getTime = ()=>{
-    console.log('获取盘点日期',this.refs)
+    // console.log('获取盘点日期',this.refs)
+    console.log('时间',t1,t2)
+    // 发起请求 查询该区间内的 数据 便于盘点
+    console.log(this.state.nowPage,this.state.pageSize)
+    getShopsByTime(this.state.nowPage,this.state.pageSize,t1,t2).then((res)=>{
+      // console.log( res)
+      let {shops,allCount} = res.list
+      this.setState({data:shops,total:allCount})
+      // this.getTableDate(this.state.nowPage,this.state.pageSize)
+      console.log(this.state.data)
+    })
   }
 
   // 挂载时请求 数据库中的数据
@@ -63,24 +75,34 @@ class InventoryBinding extends Component{
   }
 
   // 修改当前的时间
+    
   changeTime = (dateString) => {
-    console.log(dateString)
+    // console.log('时间',dateString)  //["2020-01-11", "2020-01-18"]
+    // 获取到了 两个日期值  
+      // 赋给 state中的数据
+    // this.setState({startTime:dateString[0],endTime:dateString[1]})
+    t1 = dateString[0]
+    t2 = dateString[1]
+    // console.log(this.state)
+    // console.log(t1,t2)
+    this.getTime()
   }
 
   // 获取表格数据
   getTableDate = (nowPage,pageSize) => {
     // console.log('更新表格数据')
     getData(nowPage,pageSize).then((res)=>{
-      // console.log(res)
+      // console.log('res',res.list.shops[0].ctime)
       let {shops,allCount} = res.list
       this.setState({data:shops,total:allCount})
+      console.log('getData',this.state.data)
     })
   }
   chart=()=>{
     console.log('曲线图')
   }
   render(){
-    let {columns,data,total,pageSize,startTime,endTiem} = this.state
+    let {columns,data,total,pageSize,startTime,endTime} = this.state
     return(
       <Table
       columns={columns}
@@ -89,9 +111,9 @@ class InventoryBinding extends Component{
       bordered
       title={() =>{return(
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
-            <span>盘点管理</span>
+            <span onClick={this.getTime.bind(startTime,endTime)} >盘点管理</span>
             <div style={{display: 'flex',justifyContent: 'center'}}>
-              <Time style={{width:'100px'}} timeData={[this.startTime,this.endTiem]} />
+              <Time style={{width:'100px'}} timeData={[startTime,endTime]} changeTime={this.changeTime}/>
               <Button onClick={this.getTime} >
                 开始盘点
               </Button>
