@@ -8,6 +8,7 @@ import Inventory from '../pages/User/InventoryBing/InventoryBinding'
 import Activity from '../pages/User/Goods/Discounts/Discounts'
 import Stock from '../pages/User/Goods/Stock/Stock'
 import Type from '../pages/User/Goods/Type/Type'
+import IBchart from '../components/IBchart/IBchart'
 
 
 class Router extends Component{
@@ -33,7 +34,8 @@ class Router extends Component{
               <Route path='/admin/goods/type' component={Type}></Route>
               <Route path='/admin/Discounts' component={Activity}></Route>
               {/* 盘点管理 */}
-              <Route path='/admin/InventoryBinding' component={Inventory}></Route>
+              <Route exact path='/admin/InventoryBinding' component={Inventory}></Route>
+              <Route exact path='/admin/InventoryBinding/chart' component={IBchart}></Route>
               </Switch>
             </Admin>
           )
