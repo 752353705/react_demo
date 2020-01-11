@@ -1,43 +1,95 @@
 import React,{Component} from 'react'
 import {Button,Card,message,Form,Input} from 'antd'
-import {AddGoods} from '../../../../api/goods'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import ActionCreatore from '../../../../store/ActionCreatore'
+import {AddStockGoods,goodsStock} from '../../../../api/goods'
 class StockAdd extends Component{
-  constructor(){
-    super()
-    this.state={
-      name:'',
-      price:'',
-      img:null,
-      foodType:'',
-      desc:''
-    }
-  }
   addStock=()=>{
-    AddGoods(this.state).then((res)=>{
-      console.log('添加',this.props);
-      // this.props.closeDrawer()
-      message.success('添加成功')
-      this.props.setDrawerShow(false)
-    })
-    .catch((err)=>{
-      console.log('添加失败',this.props);
-      // this.props.closeDrawer()
-      message.error('添加失败')
-      this.props.setDrawerShow(false)
+    console.log('传',this.props);
+    let {validateFields} = this.props.form 
+    validateFields((err,data)=>{
+      if(err){
+        message.error('用户输入有误,请重试')
+      }else{
+      let {KCode,shopCode,shopName,KNum}=data
+      AddStockGoods(KCode,shopCode,shopName,KNum).then((res)=>{
+        message.success('添加成功')
+        goodsStock().then((res)=>{
+          // 当前页面数=总页数/页码数
+          // let nowpage = res.list.allCount/pageSize
+
+          // console.log('添加的信息',this.props);
+
+          // 获取getTableData方法传入nowpage和pageSize,更新数据
+
+          // console.log('添加成的数据',res);
+        })
+        this.props.setDrawerShow(false)
+        window.location.reload()
+      }).catch((err)=>{
+        message.success('添加失败')
+        this.props.setDrawerShow(false)
+      })
+      KCode=''
+      shopCode=''
+      shopName=''
+      KNum=''
+      }
     })
   }
   render(){
     let {getFieldDecorator} = this.props.form
     return(
       <Card title='添加产品'>
-        库存编号:{getFieldDecorator('库存编号',{rules:[{required:true}]},<Input type='text' placeholder='请填写库存编号'/>)}<br/>
-        商品编号:{getFieldDecorator('商品编号',{rules:[{required:true}]},<Input type='text' placeholder='请填写商品编号'/>)}<br/>
-        商品名称:{getFieldDecorator('商品名称',{rules:[{required:true}]},<Input type='text' placeholder='请填写商品名称'/>)}<br/>
-        库存数量:{getFieldDecorator('库存数量',{rules:[{required:true}]},<Input type='text' placeholder='请填写库存数量'/>)}<br/>
-        <Button onClick={this.addStock}>添加</Button>
+         <Form.Item>
+         库存编号:
+          {getFieldDecorator('KCode', {
+            rules: [{ required: true, message: '库存编号不能为空!' }]
+          })(
+            <Input type='text'
+            placeholder='请填写库存编号'
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+        商品编号:
+          {getFieldDecorator('shopCode', {
+           rules: [{ required: true, message: '商品编号不能为空!' }]
+          })(
+            <Input
+            type='text' placeholder='请填写商品编号'
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+        商品名称:
+          {getFieldDecorator('shopName', {
+           rules: [{ required: true, message: '商品名称不能为空!' }]
+          })(
+            <Input
+              type='text'
+              placeholder="请填写商品名称"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+        库存数量:
+          {getFieldDecorator('KNum', {
+           rules: [{ required: true, message: '库存数量不能为空!' }]
+          })(
+            <Input
+              type='text'
+              placeholder="请填写库存数量"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary"
+          className="login-form-button" onClick={this.addStock}>
+            添加
+          </Button>
+        </Form.Item>
       </Card>
     )
   }

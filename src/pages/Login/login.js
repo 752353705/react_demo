@@ -16,7 +16,7 @@ class Login extends Component{
   }
   login=()=>{
    let {getFieldsValue,validateFields} = this.props.form 
-    // console.log(getFieldsValue());
+    console.log(validateFields());
     validateFields((err,data)=>{
       if(err){
         message.error('用户输入有误,请重试')

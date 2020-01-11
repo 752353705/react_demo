@@ -1,43 +1,59 @@
 import React,{Component} from 'react'
 import {Button,Card,message,Form,Input} from 'antd'
-import {AddGoods} from '../../../../api/goods'
+import {UpdateTypeGoods} from '../../../../api/goods'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import ActionCreatore from '../../../../store/ActionCreatore'
 import styles from './Upstyle.module.less'
 class TypeAdd extends Component{
-  constructor(){
+  constructor(props){
     super()
-    this.state={
-      name:'',
-      price:'',
-      img:null,
-      foodType:'',
-      desc:''
-    }
+    this.state=props.updataData
+  }
+  componentWillReceiveProps(props,state){
+    let {_id,Num,name} = props.updataData
+    this.setState({_id,Num,name})
   }
   updataType=()=>{
-    AddGoods(this.state).then((res)=>{
-      message.success('添加成功')
+    // console.log('aaa',this.state.getTableData);
+    console.log('wdww',this);
+    
+    let {_id,Num,name} = this.state
+      UpdateTypeGoods(_id,Num,name).then((res)=>{
+      console.log('修改',this.props);
+      this.props.setDrawerShow(false)
       this.props.setUpShow(false)
+      message.success('修改成功')
+      window.location.reload()
+      
     })
     .catch((err)=>{
-      message.error('添加失败')
-      this.props.setUpShow(false)
+      console.log('err',err);
+      
+      console.log('修改失败',this.props);
+      message.error('修改失败')
+      this.props.setDrawerShow(false)
     })
+
   }
   render(){
-    let {getFieldDecorator} = this.props.form
+    let {_id,Num,name}=this.state
     return(
       <Card title='修改类别名称' className={styles.tyupstyle}>
-        {/* id:{_id}<br/> */}
-        类名编号:{getFieldDecorator('类名编号',{rules:[{required:true}]},<Input type='text' placeholder='请填写类名编号'/>)}<br/>
-        类别名称:{getFieldDecorator('类别名称',{rules:[{required:true}]},<Input type='text' placeholder='请填类别名称'/>)}<br/>
-        <Button onClick={this.updataType}>修改</Button>
-        <Button onClick={()=>{
-          this.props.setUpShow(false)
-        }}>退出修改</Button>
-      </Card>
+      id:{_id}<br/>
+      类名编号:<Input type='text' value={Num} onChange={(e)=>{
+        let value = e.target.value
+        this.setState({Num:value})
+      }}/><br/>
+      类别名称:<Input type='text' value={name} onChange={(e)=>{
+        let value = e.target.value
+        this.setState({name:value})
+      }}/><br/>
+      <Button onClick={this.updataType}>修改</Button>
+      <Button onClick={()=>{
+        this.props.setUpShow(false)
+      }}>退出修改</Button>
+    </Card>
     )
   }
 }

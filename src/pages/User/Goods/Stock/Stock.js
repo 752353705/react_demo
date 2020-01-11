@@ -1,6 +1,5 @@
 import React,{Component, Fragment} from 'react'
 import { Table,Card,Pagination,Spin,Drawer } from 'antd';
-import {data} from './StockData'
 import {goodsStock} from '../../../../api/goods'
 import StockAdd from './StockAdd'
 import StockHead from './Stock-Head'
@@ -49,30 +48,36 @@ class Stock extends Component{
 openDrawer=()=>{
   this.setState({drawerShow:true})
 }
-  changePage=(page)=>{
-    this.setState({current:page})
-  }
+  // changePage=(page)=>{
+  //   this.setState({current:page})
+  // }
   componentDidMount(){
     this.getTableData(1,5)
   }
   getTableData(nowPage,pageSize){
     goodsStock(nowPage,pageSize).then((res)=>{
+      console.log('页码数',nowPage,pageSize);
       console.log('库存管理返回的数据',res);
-      let {foods,allCount} = res.list
-      this.setState({data:data,spinning:false,total:allCount})
-      // this.setState({data:foods,spinning:false,total:allCount})
+      let {stocks,allCount} = res.list
+      console.log(stocks);
+      this.setState({data:stocks,spinning:false,total:allCount},(total)=>{
+        console.log('total',total);
+        
+      })
+      
+      
       // console.log(this.state.spinning);
       
     })
   }
   render(){
-    let {columns,data,spinning,total,pageSize,drawerShow} = this.state
+    let {columns,data,spinning,total,pageSize} = this.state
     // console.log('列表',spinning);
     
     return(
       <Fragment>
         <Card title='库存管理'>
-        <StockHead openDrawer={this.openDrawer}></StockHead>
+        <StockHead openDrawer={this.openDrawer} getTableData={this.getTableData} pageSize={this.state.pageSize}></StockHead>
         <Spin spinning={spinning}>
          <Table
         columns={columns}
@@ -83,6 +88,8 @@ openDrawer=()=>{
       >   
       </Table>
        <Pagination total={total} pageSize={pageSize} onChange={(nextPage,pageSize)=>{
+         console.log('页数',nextPage,pageSize);
+         
          this.getTableData(nextPage,pageSize)
        }}></Pagination>
         </Spin>
