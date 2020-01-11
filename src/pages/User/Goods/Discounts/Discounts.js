@@ -71,9 +71,14 @@ class Discounts extends Component{
     visible: false 
   }
   
+  // 使更新后的页数 指向第一页
+  changeNowPage(){
+    this.setState({nowPage:1})
+  }
+
   // 挂载时
   componentDidMount(){
-    this.getTableDate(2,3)
+    this.getTableDate(1,3)
   }
 
   add=()=>{
@@ -88,7 +93,7 @@ class Discounts extends Component{
   }
   getTableDate=(nowPage,pageSize)=>{
     // 通过网络请求获取数据更新界面
-    console.log('更新表格数据')
+    // console.log('更新表格数据')
     getData(nowPage,pageSize).then((res)=>{
       // console.log(nowPage,pageSize)
       // console.log('res',res)
@@ -100,7 +105,7 @@ class Discounts extends Component{
     })
   }
   render(){
-    let {columns,data,spinning,total,pageSize} = this.state
+    let {columns,data,spinning,total,pageSize,nowPage} = this.state
     // console.log('nowPage',nowPage)
     return(
       <Fragment>
@@ -122,9 +127,10 @@ class Discounts extends Component{
         </div>
         )
       }}
-      footer={() => <Pagination  total={total} pageSize={pageSize} defaultPageSize={1}
+      footer={() => <Pagination  total={total} pageSize={pageSize} defaultPageSize={nowPage}
         onChange={(nextPage,pageSize)=>{
             // console.log(nextPage,pageSize)
+            nowPage = nextPage
             this.getTableDate(nextPage,pageSize)
 
           }
@@ -134,7 +140,7 @@ class Discounts extends Component{
       <Add data={this.state.visible} 
           setData={this.add} 
           getTableDate={this.getTableDate}
-          Add_nowPage={this.state.nowPage}
+          changeNowPage={this.changeNowPage}
       ></Add>
       
       

@@ -4,6 +4,7 @@ import styles from './Login.module.less'
 import {UserLogin} from '../../api/user'
 import {withRouter} from 'react-router-dom'
 import {getItem,setItem} from '../../utils/webStorage'
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 class Login extends Component{
   componentDidMount(){
@@ -23,7 +24,8 @@ class Login extends Component{
         // 成功发起网络请求
         let {userName,passWord} = data
         UserLogin(userName,passWord).then((res)=>{
-          console.log(res);
+          setItem('userName',userName)
+          // console.log(res);
           setItem("token",res.token)
           setItem('uid',res.uid)
           setItem('rootIds',res.rootList)
@@ -45,8 +47,7 @@ class Login extends Component{
         <Form.Item>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: '用户名不能为空!' },
-            { min:3 , message: '最小长度为3个字符!' },
-            { max: 9, message: '最大长度为9个字符!' }]
+            { min:3 , message: '最小长度为3个字符!' }]
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -72,7 +73,13 @@ class Login extends Component{
           className="login-form-button" onClick={this.login}>
             Log in
           </Button>
-          Or <a href="">register now!</a>
+          Or 
+          <Link to='/reg'>
+            <Button type="primary"
+            className="login-form-button">
+              注册
+            </Button>
+          </Link>
         </Form.Item>
       </Card>
         </div>

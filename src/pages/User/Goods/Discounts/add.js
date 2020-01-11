@@ -19,9 +19,12 @@ class DrawerForm extends React.Component {
       // console.log(res)
       // getData()
       // console.log('this.props',this.props)
-      let {nowPage} = this.props
-      console.log(nowPage)
+      // let {nowPage} = this.props
+      // console.log(nowPage)
       this.props.getTableDate()
+      // this.props.changeNowPage()
+      console.log(this.props)
+      message.success('添加成功')
     })
     .catch((err)=>{
       message.error('添加失败')

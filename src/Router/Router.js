@@ -9,6 +9,7 @@ import Activity from '../pages/User/Goods/Discounts/Discounts'
 import Stock from '../pages/User/Goods/Stock/Stock'
 import Type from '../pages/User/Goods/Type/Type'
 import IBchart from '../components/IBchart/IBchart'
+import Reg from '../pages/Reg/Reg'
 
 
 class Router extends Component{
@@ -20,11 +21,13 @@ class Router extends Component{
         <Switch>
         <Redirect exact from='/' to='/login'></Redirect>
         <Route path='/login' component={Login}></Route>
+        <Route path='/reg' component={Reg}></Route>
         <Route path='/admin' render={()=>{
           return(
             <Admin>
               <Switch>
               <Redirect exact from='/admin' to='/admin/home'></Redirect>
+              
               {/* 首页 */}
               <Route path='/admin/home' component={Home}></Route>
               {/* 用户管理 */}
