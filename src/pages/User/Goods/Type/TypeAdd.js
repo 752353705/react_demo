@@ -31,8 +31,8 @@ class TypeAdd extends Component{
     let {getFieldDecorator} = this.props.form
     return(
       <Card title='添加类别名称'>
-        类名编号:{getFieldDecorator('类名编号',{rules:[{required:true}]},<Input type='text' placeholder='请填写类名编号'/>)}<br/>
-        类别名称:{getFieldDecorator('类别名称',{rules:[{required:true}]},<Input type='text' placeholder='请填类别名称'/>)}<br/>
+        类名编号:{getFieldDecorator('类名编号',{rules:[{required:true}]}),(<Input type='text' placeholder='请填写类名编号'/>)}<br/>
+        类别名称:{getFieldDecorator('类别名称',{rules:[{required:true}]}),(<Input type='text' placeholder='请填类别名称'/>)}<br/>
         <Button onClick={this.addStock}>添加</Button>
       </Card>
     )

@@ -31,8 +31,8 @@ class TypeAdd extends Component{
     return(
       <Card title='修改类别名称' className={styles.tyupstyle}>
         {/* id:{_id}<br/> */}
-        类名编号:{getFieldDecorator('类名编号',{rules:[{required:true}]},<Input type='text' placeholder='请填写类名编号'/>)}<br/>
-        类别名称:{getFieldDecorator('类别名称',{rules:[{required:true}]},<Input type='text' placeholder='请填类别名称'/>)}<br/>
+        类名编号:{getFieldDecorator('类名编号',{rules:[{required:true}]}),(<Input type='text' placeholder='请填写类名编号'/>)}<br/>
+        类别名称:{getFieldDecorator('类别名称',{rules:[{required:true}]}),(<Input type='text' placeholder='请填类别名称'/>)}<br/>
         <Button onClick={this.updataType}>修改</Button>
         <Button onClick={()=>{
           this.props.setUpShow(false)

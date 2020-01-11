@@ -15,7 +15,7 @@ class Login extends Component{
   }
   login=()=>{
    let {getFieldsValue,validateFields} = this.props.form 
-    // console.log(getFieldsValue());
+    console.log(validateFields());
     validateFields((err,data)=>{
       if(err){
         message.error('用户输入有误,请重试')
@@ -45,8 +45,7 @@ class Login extends Component{
         <Form.Item>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: '用户名不能为空!' },
-            { min:3 , message: '最小长度为3个字符!' },
-            { max: 9, message: '最大长度为9个字符!' }]
+            { min:3 , message: '最小长度为3个字符!' }]
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}

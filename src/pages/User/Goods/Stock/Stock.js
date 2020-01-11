@@ -1,6 +1,5 @@
 import React,{Component, Fragment} from 'react'
 import { Table,Card,Pagination,Spin,Drawer } from 'antd';
-import {data} from './StockData'
 import {goodsStock} from '../../../../api/goods'
 import StockAdd from './StockAdd'
 import StockHead from './Stock-Head'
@@ -57,10 +56,11 @@ openDrawer=()=>{
   }
   getTableData(nowPage,pageSize){
     goodsStock(nowPage,pageSize).then((res)=>{
+      console.log('页码数',nowPage,pageSize);
       console.log('库存管理返回的数据',res);
-      let {foods,allCount} = res.list
-      this.setState({data:data,spinning:false,total:allCount})
-      // this.setState({data:foods,spinning:false,total:allCount})
+      let {stocks,allCount} = res.list
+      console.log(stocks);
+      this.setState({data:stocks,spinning:false,total:allCount})
       // console.log(this.state.spinning);
       
     })
@@ -83,6 +83,8 @@ openDrawer=()=>{
       >   
       </Table>
        <Pagination total={total} pageSize={pageSize} onChange={(nextPage,pageSize)=>{
+         console.log('页数',nextPage,pageSize);
+         
          this.getTableData(nextPage,pageSize)
        }}></Pagination>
         </Spin>
