@@ -16,9 +16,17 @@ class StockAdd extends Component{
       AddStockGoods(KCode,shopCode,shopName,KNum).then((res)=>{
         message.success('添加成功')
         goodsStock().then((res)=>{
-          console.log('添加成的数据',res);
+          // 当前页面数=总页数/页码数
+          // let nowpage = res.list.allCount/pageSize
+
+          // console.log('添加的信息',this.props);
+
+          // 获取getTableData方法传入nowpage和pageSize,更新数据
+
+          // console.log('添加成的数据',res);
         })
         this.props.setDrawerShow(false)
+        window.location.reload()
       }).catch((err)=>{
         message.success('添加失败')
         this.props.setDrawerShow(false)

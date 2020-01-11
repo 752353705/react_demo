@@ -1,7 +1,6 @@
 import React,{Component, Fragment} from 'react'
 import { Table,Card,Pagination,Spin ,Button,Icon,Popconfirm, message,Drawer } from 'antd';
-// import {data} from './TypesData'
-import {goodsStock,DelGoods} from '../../../../api/goods'
+import {goodsType,DelTypeGoods,UpdateTypeGoods} from '../../../../api/goods'
 import TypeHead from './Type-Head'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -37,11 +36,11 @@ class Type extends Component{
               <Button style={{marginRight:'10%'}} onClick={()=>{
                 // 没有dataIndex时,record表示当前这个数据的所有值,有dataIndex时,record就只表示dataIndex后面跟的值
                 console.log('这里是修改',record);
-                console.log('这里是修改',this.props)
+                this.setState({updataData:record,getTableData:this.getTableData})
                 this.props.setUpShow(true)
-                console.log('这里是修改',this.props)
-                                // this.setState({drawerShow:true,updataData:record})
-            
+                // this.props. getTableData=this.getTableData
+                console.log('xixi',this);
+                
               }}><Icon type="form" /></Button>
               <Popconfirm title='确认要删除吗?'
               okText='删除'
@@ -68,28 +67,31 @@ class Type extends Component{
     this.setState({drawerShow:false})
     this.getTableData(this.nowPage,this.pageSize)
   }
-  // changePage=(page)=>{
-  //   this.setState({current:page})
-  // }
+
   componentDidMount(){
     this.getTableData(1,5)
   }
   getTableData(nowPage,pageSize){
-    goodsStock(nowPage,pageSize).then((res)=>{
-      console.log('库存管理返回的数据',res);
-      let {foods,allCount} = res.list
+    goodsType(nowPage,pageSize).then((res)=>{
+      console.log('品类管理返回的数据',res);
+      let {types,allCount} = res.list
       // this.setState({data:data,spinning:false,total:allCount})
-      this.setState({data:foods,spinning:false,total:allCount})
+      this.setState({data:types,spinning:false,total:allCount})
     })
   }
   del(id){
-    DelGoods(id).then(()=>{
+    DelTypeGoods(id).then((res)=>{
+      console.log('删除的id',res,id);
       this.getTableData()
+      message.success('删除成功')
+      
+    }).catch((err)=>{
+      message.error('删除失败')
     })
   }
   showType(){
     if(this.props.UpShow){
-     return(<TypeUpdata closeShow={this.props.UpShow}></TypeUpdata>) 
+     return(<TypeUpdata closeShow={this.props.UpShow} updataData={this.state.updataData}></TypeUpdata>) 
     }else{
       return 
     }
@@ -106,7 +108,7 @@ class Type extends Component{
         dataSource={data}
         bordered
         pagination={false}
-        rowKey={data.key}
+        rowKey={data._id}
       >   
       </Table>
        <Pagination total={total} pageSize={pageSize} onChange={(nextPage,pageSize)=>{

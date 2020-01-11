@@ -17,18 +17,33 @@ export const AddStockGoods = async(KCode,shopCode,shopName,KNum)=>{
 }
 
 
-
-// 品类管理删除接口
-export const DelGoods = async(id)=>{
-  let res = await axios.post('/hehe/v1/admin/food/delFood',{id})
+// 品类显示列表接口
+export const goodsType = async(page=1,pageSize=5)=>{
+  let res = await axios.post('/hehe/v1/admin/shop/gettype',{page,pageSize})
   if(res.err !== 0){
     throw res
   }
   return res
 }
 // 品类管理添加接口
-export const AddGoods = async(obj)=>{
-  let res = await axios.post('/hehe/v1/admin/food/addFood',{...obj})
+export const AddTypeGoods = async(Num,name)=>{
+  let res = await axios.post('/hehe/v1/admin/shop/addtype',{Num,name})
+  if(res.err !== 0){
+    throw res
+  }
+  return res
+}
+// 品类管理删除接口
+export const DelTypeGoods = async(id)=>{
+  let res = await axios.post('/hehe/v1/admin/shop/deltype',{id})
+  if(res.err !== 0){
+    throw res
+  }
+  return res
+}
+// 品类管理修改接口
+export const UpdateTypeGoods = async(_id,Num,name)=>{
+  let res = await axios.post('/hehe/v1/admin/shop/updatetype',{_id,Num,name})
   if(res.err !== 0){
     throw res
   }

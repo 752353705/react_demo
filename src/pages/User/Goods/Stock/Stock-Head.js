@@ -15,6 +15,7 @@ class StockHead extends Component{
     }
   }
   componentDidMount(){
+    
     setTimeout(()=>{
      let arr = []
     data.map((item)=>{
@@ -75,11 +76,9 @@ class StockHead extends Component{
           onInput={this.input}
         />)}
         <Button style={{ width: '30%' }} value='添加商品' onClick={()=>{
-          // stort.dispath(ActionCreatore.setDrawerShow(true))
-          
-        console.log(this.props);
+        console.log('头部信息',this.props);
+        // 在这里能拿到getTableData方法和pageSize,需要传给抽屉
         this.props.setDrawerShow(true)
-          // this.props.openDrawer()
         }}>添加商品</Button>
         </div>
       </Fragment>

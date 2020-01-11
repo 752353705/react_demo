@@ -48,9 +48,9 @@ class Stock extends Component{
 openDrawer=()=>{
   this.setState({drawerShow:true})
 }
-  changePage=(page)=>{
-    this.setState({current:page})
-  }
+  // changePage=(page)=>{
+  //   this.setState({current:page})
+  // }
   componentDidMount(){
     this.getTableData(1,5)
   }
@@ -60,19 +60,24 @@ openDrawer=()=>{
       console.log('库存管理返回的数据',res);
       let {stocks,allCount} = res.list
       console.log(stocks);
-      this.setState({data:stocks,spinning:false,total:allCount})
+      this.setState({data:stocks,spinning:false,total:allCount},(total)=>{
+        console.log('total',total);
+        
+      })
+      
+      
       // console.log(this.state.spinning);
       
     })
   }
   render(){
-    let {columns,data,spinning,total,pageSize,drawerShow} = this.state
+    let {columns,data,spinning,total,pageSize} = this.state
     // console.log('列表',spinning);
     
     return(
       <Fragment>
         <Card title='库存管理'>
-        <StockHead openDrawer={this.openDrawer}></StockHead>
+        <StockHead openDrawer={this.openDrawer} getTableData={this.getTableData} pageSize={this.state.pageSize}></StockHead>
         <Spin spinning={spinning}>
          <Table
         columns={columns}
