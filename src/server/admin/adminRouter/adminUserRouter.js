@@ -1,7 +1,6 @@
 const express = require('express');
 const router =express.Router()
 const jwt = require('../../utils/jwt')
-const app = express();
 const Mail = require('../../mail');
 const codes = {};
 const adminModel = require('../../db/model/adminModel')
@@ -81,5 +80,4 @@ router.post('/logout',(req,res)=>{
     res.send({err:0,msg:'logout ok'})
   })
 })
-
 module.exports=router

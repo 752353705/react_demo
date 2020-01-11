@@ -4,6 +4,7 @@ import {columns,data} from './StockData'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import ActionCreatore from '../../../../store/ActionCreatore'
+import {goodsType} from '../../../../api/goods'
 const { Option } = Select;
 
 class StockHead extends Component{
@@ -15,13 +16,21 @@ class StockHead extends Component{
     }
   }
   componentDidMount(){
-    
-    setTimeout(()=>{
-     let arr = []
+    goodsType().then((res)=>{
+      console.log('头部',res);
+      let data = res.list.types
+      let arr = []
     data.map((item)=>{
-      arr.push({KCode:item.KCode,
-        shopCode:item.shopCode})
+      // arr.push({KCode:item.KCode,
+      //   shopCode:item.shopCode})
+      arr.push(item)
     })
+    // setTimeout(()=>{
+    //  let arr = []
+    // data.map((item)=>{
+    //   arr.push({KCode:item.KCode,
+    //     shopCode:item.shopCode})
+    // })
     this.setState({shopNumber:arr})
     // console.log(this.state.shopNumber); 
     console.log(this);
