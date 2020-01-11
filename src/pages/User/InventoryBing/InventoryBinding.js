@@ -16,6 +16,7 @@ class InventoryBinding extends Component{
       nowPage:1,
       pageSize:3,
       data:[],
+      spinning:true,
       columns:[
         {
           title: '商品编码',
@@ -94,7 +95,7 @@ class InventoryBinding extends Component{
     getData(nowPage,pageSize).then((res)=>{
       // console.log('res',res.list.shops[0].ctime)
       let {shops,allCount} = res.list
-      this.setState({data:shops,total:allCount})
+      this.setState({data:shops,total:allCount,spinning:false})
       console.log('getData',this.state.data)
     })
   }
@@ -102,39 +103,41 @@ class InventoryBinding extends Component{
     console.log('曲线图')
   }
   render(){
-    let {columns,data,total,pageSize,startTime,endTime} = this.state
+    let {columns,data,total,pageSize,startTime,endTime,spinning} = this.state
     return(
-      <Table
-      columns={columns}
-      dataSource={data}
-      pagination={false}
-      bordered
-      title={() =>{return(
-          <div style={{display: 'flex',justifyContent: 'space-between'}}>
-            <span onClick={this.getTime.bind(startTime,endTime)} >盘点管理</span>
-            <div style={{display: 'flex',justifyContent: 'center'}}>
-              <Time style={{width:'100px'}} timeData={[startTime,endTime]} changeTime={this.changeTime}/>
-              <Button onClick={this.getTime} >
-                开始盘点
-              </Button>
-              <Link to={'/admin/InventoryBinding/chart'}>
-                <Button type="primary" onClick={this.chart}>
-                  曲线图
-                </Button>
-              </Link>
+      <spinning spinning={spinning}>
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={false}
+            bordered
+            title={() =>{return(
+                <div style={{display: 'flex',justifyContent: 'space-between'}}>
+                  <span onClick={this.getTime.bind(startTime,endTime)} >盘点管理</span>
+                  <div style={{display: 'flex',justifyContent: 'center'}}>
+                    <Time style={{width:'100px'}} timeData={[startTime,endTime]} changeTime={this.changeTime}/>
+                    <Button onClick={this.getTime} >
+                      开始盘点
+                    </Button>
+                    <Link to={'/admin/InventoryBinding/chart'}>
+                      <Button type="primary" onClick={this.chart}>
+                        曲线图
+                      </Button>
+                    </Link>
 
-            </div>
-          </div>
-      )}}
-      footer={() => <Pagination  total={total} pageSize={pageSize} defaultPageSize={1}
-        onChange={(nextPage,pageSize)=>{
-          // console.log(nextPage,pageSize)
-          this.getTableDate(nextPage,pageSize)
+                  </div>
+                </div>
+            )}}
+            footer={() => <Pagination  total={total} pageSize={pageSize} defaultPageSize={1}
+              onChange={(nextPage,pageSize)=>{
+                // console.log(nextPage,pageSize)
+                this.getTableDate(nextPage,pageSize)
 
-          }
-        }
-      />}
-      />
+                }
+              }
+            />}
+        />
+      </spinning>
     
     )
     

@@ -1,5 +1,5 @@
 import React, { Component ,Fragment} from 'react'
-import { Table ,Pagination, Button, Popconfirm, message} from 'antd';
+import { Table ,Pagination, Button, Popconfirm, message, Spin} from 'antd';
 // import {columns,data} from './DSdata'
 import {getData,delShop} from '../../../../api/shop'
 import Add from './add'
@@ -13,6 +13,7 @@ class Discounts extends Component{
       pageSize:3,
       drawerShow:false,
       updateData:{},//要修改的数据
+      spinning:true,
       columns:[  {
         title: '商品编号',
         dataIndex: 'shopNum',
@@ -100,7 +101,7 @@ class Discounts extends Component{
       let {shops,allCount} = res.list
       // console.log('shops',shops)
       // console.log('allCount',allCount)
-      this.setState({data:shops,total:allCount})
+      this.setState({data:shops,total:allCount,spinning:false})
       // console.log(this.state.data)
     })
   }
@@ -109,34 +110,39 @@ class Discounts extends Component{
     // console.log('nowPage',nowPage)
     return(
       <Fragment>
-      <Table
-      columns={columns}
-      dataSource={data}
-      bordered
-      pagination={false}
-      title={() =>{
-        return(
-          <div style={{display:'flex',justifyContent: 'space-between'}}>
-          <div>
-            折扣活动>
-          </div>
-          <div>
-            <button onClick={this.add}>添加折扣商品</button>
-            {/* <button onClick={this.del}>删除折扣商品</button> */}
-          </div>
-        </div>
-        )
-      }}
-      footer={() => <Pagination  total={total} pageSize={pageSize} defaultPageSize={nowPage}
-        onChange={(nextPage,pageSize)=>{
-            // console.log(nextPage,pageSize)
-            nowPage = nextPage
-            this.getTableDate(nextPage,pageSize)
+        <Spin spinning={spinning}>
+            <Table
+            columns={columns}
+            dataSource={data}
+            bordered
+            pagination={false}
+            title={() =>{
+              return(
+                <div style={{display:'flex',justifyContent: 'space-between'}}>
+                <div>
+                  折扣活动>
+                </div>
+                <div>
+                  <button onClick={this.add}>添加折扣商品</button>
+                  {/* <button onClick={this.del}>删除折扣商品</button> */}
+                </div>
+              </div>
+              )
+            }}
+            footer={() => <Pagination  total={total} pageSize={pageSize} defaultPageSize={nowPage}
+              onChange={(nextPage,pageSize)=>{
+                  // console.log(nextPage,pageSize)
+                  nowPage = nextPage
+                  this.getTableDate(nextPage,pageSize)
 
-          }
-        }
-      />}
-      />
+                }
+              }
+            />}
+          >
+
+          </Table>
+        </Spin>
+
       <Add data={this.state.visible} 
           setData={this.add} 
           getTableDate={this.getTableDate}
