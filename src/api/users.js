@@ -31,6 +31,7 @@ export const userInfo= async (page,pageSize)=>{
     // then里接受的数据就是函数返回的数据  
     
       let res = await axios.post('/hehe/v1/admin/users/usersByKw',{value,page})
+      console.log(res,"deo")
       if(res.err!==0){
         throw res
       }
@@ -49,4 +50,14 @@ export const userInfo= async (page,pageSize)=>{
         throw res
       }
       return res
+  }
+
+
+  //更新信息
+  export const addCountuser = async(obj)=>{
+    let res = await axios.post('/hehe/v1/admin/users/addusers',{...obj})
+    if(res.err !== 0){
+      throw res
+    }
+    return res
   }

@@ -1,20 +1,9 @@
-// import React,{Component, Fragment} from 'react'
-// class User extends Component{
-//   render(){
-//     return(
-//       <Fragment>
-//         这里是用户管理
-//       </Fragment>
-//     )
-//   }
-// }
-// export default User
-
 import React ,{Component,Fragment} from "react"
-import { Table,Pagination,Input,Popconfirm, message,Drawer,Button,Form, Col, Row} from 'antd';
+import { Table,Pagination,Input,Popconfirm, message,Button} from 'antd';
 import styles from "./user.module.less"
-// import {userInfo,delInfo,valueInfo} from "../../api/users"
+
 import {userInfo,delInfo,valueInfo} from "../../../api/users"
+import Add from './add'
 
 
 const { Search } = Input;
@@ -43,15 +32,21 @@ const { Search } = Input;
     },
   ];
 
+
+
+  
+
 class User extends Component {
   constructor(){
     super()
    this.state={
+    nowPage:1,
+    total:5,
      data:data,
      page:1,
      pageSize:3,
      drawerShow:false,
-     selectValue:"用户名",
+     updateData:{},//要修改的数据
      columns : [
       {
         title: 'Uid编号',
@@ -70,9 +65,9 @@ class User extends Component {
         key: 'password',
       },
       {
-        title: 'Password',
-        dataIndex: 'password',
-        key: 'password',
+        title: 'id',
+        dataIndex: 'id',
+        key: 'id',
       },
       
       {
@@ -103,7 +98,8 @@ class User extends Component {
               </Popconfirm>
               {/*点击修改时将drawerShow设为true让他显示 */}
               <Button size='small' onClick={()=>{
-                this.setState({drawerShow:true})
+                this.setState({drawerShow:true,updateData:record})
+                this.add(record)
                 console.log(record,"修改时的数据")
               }}>修改</Button>
             </div>
@@ -112,6 +108,22 @@ class User extends Component {
     ]
    }
   }
+
+ // 控制抽屉的现实与隐藏
+ state = {
+  visible: false 
+}
+
+// 使更新后的页数 指向第一页
+changeNowPage(){
+  this.setState({nowPage:1})
+}
+
+
+add=()=>{
+ this.setState({visible:!this.state.visible}) 
+}
+
   componentDidMount(){
     let page = this.state.initpage;
     let pageSize = this.state.pageSize;
@@ -135,104 +147,85 @@ delInfo(_id){
   })
 }
 
+//根据关键字查找
 searchvalue(value){
   let page = this.state.page;
-  
-
-  
+  console.log(value)
   valueInfo(value,page).then((data)=>{
+    console.log(data,"mohu")
     this.setState({data:data.data})
+    console.log(this.state.data,"gyeudijo")
   }).catch((err)=>{
     console.log(err)
   })
 }
 
-  render(){
-    console.log(this.state.data,"render")
-    return(
-      <Fragment>
-          <div>
-              <div>
-                  <span>用户管理></span>
-                  <br/>
-                  <select onChange={(e)=>{this.setState({selectValue:e.target.value})}}>
-                      <option>用户id</option>
-                      <option>用户名</option>
-                  </select>
-                  <span>
-                      <Search width="20px" 
-                      placeholder="input search text"
-                      enterButton="Search"
-                      size="small"
-                      onSearch={value => this.searchvalue(value)}
-                      />
-                </span>
+
   
-                      
-              </div>
 
-              <div>
-                  <Table columns={this.state.columns} dataSource={this.state.data} pagination={false}/>
-              </div>
 
-              <div className={styles.pagination}><Pagination defaultCurrent={1} total={50} 
-              defaultPageSize={3}
-              onChange={(page,pageSize)=>{
-                this.setState({page:page,pageSize:pageSize})
-                this.getinfo(page,pageSize)
-              }}
-              /></div>
-          </div>
-              {/*抽屉 */}
-              <Drawer
-              title="增加修改用户数据"
-              width={720}
-              closable={false}
-              onClose={this.onClose}
-              visible={this.state.drawerShow}
-              bodyStyle={{ paddingBottom: 80 }}
-            >
-            <Form layout="vertical" hideRequiredMark>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Name">
-                  {/* {getFieldDecorator('name', {
-                    rules: [{ required: true, message: '请输入用户名' }],
-                  })(<Input placeholder="用户名输入" />)} */}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                
-              </Col>
-            </Row>
+
+    render(){
+      console.log(this.state.data,"render")
+      return(
+        <Fragment>
+           <div>
+                <div>
+                    <span>用户管理></span>
+                    <br/>
+                    <span >
+                        <Search width="20px" className={styles.span}
+                        placeholder="input search text"
+                        enterButton="Search"
+                        size="small"
+                        onSearch={value => this.searchvalue(value)}
+                        />
+                  </span>
+                  {/*添加用户按钮 */}
+                  <span >
+                      <Button className={styles.add} onClick={this.add}
+                      >添加用户</Button>
+                  </span>
+    
+                       
+                </div>
+
+                <div>
+                    <Table columns={this.state.columns} dataSource={this.state.data} pagination={false}/>
+                </div>
+
+                {/* 分页*/}
+
+                <div className={styles.pagination}>
+                  <Pagination defaultCurrent={1} total={50} 
+                  defaultPageSize={3}
+                   onChange={(page,pageSize)=>{
+                  this.setState({page:page,pageSize:pageSize})
+                  this.getinfo(page,pageSize)
+                   }} />
+                </div>
+           </div>
             
-            
-          </Form>
-          <div
-            style={{
-              position: 'absolute',
-              right: 0,
-              bottom: 0,
-              width: '100%',
-              borderTop: '1px solid #e9e9e9',
-              padding: '10px 16px',
-              background: '#fff',
-              textAlign: 'right',
-            }}
-          >
-            <Button onClick={this.onClose} style={{ marginRight: 8 }}>
-              Cancel
-            </Button>
-            <Button onClick={this.onClose} type="primary">
-              Submit
-            </Button>
-          </div>
-            </Drawer>
+          
 
-      </Fragment>
-  )
-  }
+
+           <Add data={this.state.visible} 
+                setData={this.add} 
+                getTableDate={this.getinfo}
+                changeNowPage={this.changeNowPage}
+              ></Add>
+        </Fragment>
+    )
+    }
+    
+    }
+
   
-  }
+ 
+
+ 
+          
+
+      
 
 export default User
